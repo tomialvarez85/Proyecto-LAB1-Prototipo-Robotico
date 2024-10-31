@@ -15,6 +15,7 @@ Contenido del Repositorio:
 - Arduino: Codigo c++ del proyecto.
 - Diseño_3D: Link a Tinkercad donde se encuentra el diseño 3D del prototipo.
 - Diseño_Electronico: Contenido sobre el diseño electronico del prototipo.
+- Tutorial: Contiene tanto un tutorial escrito como un video sobre el proyecto.
 
 Guia de Instalacion:
 - Crear la estructura y conectar el hardware.
