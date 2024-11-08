@@ -46,7 +46,7 @@ void loop() {
   servo2.write(angleY);
 
   // Control por Bluetooth
-  if (bluetooth.available()) {
+  if (bluetooth.available() {
     char command = bluetooth.read();
     
     switch (command) {
