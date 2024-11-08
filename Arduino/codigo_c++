@@ -1,1 +1,61 @@
+#include <Servo.h>
+#include <SoftwareSerial.h>
 
+Servo servo1; // Servomotor para el brazo
+Servo servo2; // Servomotor para el giro
+
+// Pines para el módulo Bluetooth.
+SoftwareSerial bluetooth(0, 1); // RX, TX
+
+int joystickX = A0;
+int joystickY = A1;
+int valX, valY;
+
+void setup() {
+  // Inicia comunicación serial
+  Serial.begin(9600);
+  bluetooth.begin(9600);
+  
+  // Configura los pines del joystick como entrada
+  pinMode(joystickX, INPUT);
+  pinMode(joystickY, INPUT);
+
+  // Asigna los pines a los servos
+  servo1.attach(9); 
+  servo2.attach(10);
+  
+  // Posición inicial de los servos
+  servo1.write(90);
+  servo2.write(90);
+
+  // Delay antes de activar los servomotores
+  delay(4000); // Retraso de 2 segundos
+}
+
+void loop() {
+  // Lee los valores del joystick
+  valX = analogRead(joystickX);
+  valY = analogRead(joystickY);
+  
+  // Envio de los valores del joystick a los ángulos del servo (0 a 180 grados)
+  int angleX = map(valX, 0, 1023, 0, 180);
+  int angleY = map(valY, 0, 1023, 0, 180);
+
+  // Controla los servos con el joystick
+  servo1.write(angleX);
+  servo2.write(angleY);
+
+  // Control por Bluetooth
+  if (bluetooth.available()) {
+    char command = bluetooth.read();
+    
+    switch (command) {
+      case 'L': servo2.write(0); break;       // Girar a la izquierda
+      case 'R': servo2.write(180); break;     // Girar a la derecha
+      case 'U': servo1.write(0); break;       // Subir el brazo
+      case 'D': servo1.write(180); break;     // Bajar el brazo
+    }
+  }
+
+  delay(15); // Pequeña pausa para evitar movimientos bruscos
+}
